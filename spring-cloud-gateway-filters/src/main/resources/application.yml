@@ -1,0 +1,17 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: premium
+          uri: forward:/premium
+          predicates:
+            - Path=/orders/**
+            - ApiKey=premium-demo-key
+          filters:
+            - OrderIdHeader=prem-
+        - id: standard
+          uri: forward:/standard
+          predicates:
+            - Path=/orders/**
+          filters:
+            - OrderIdHeader=std-

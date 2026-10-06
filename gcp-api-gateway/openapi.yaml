@@ -1,0 +1,26 @@
+swagger: "2.0"
+info:
+  title: orders-api
+  version: 1.0.0
+schemes:
+  - https
+produces:
+  - application/json
+securityDefinitions:
+  api_key:
+    type: apiKey
+    name: key
+    in: query
+paths:
+  /orders:
+    get:
+      operationId: listOrders
+      summary: List orders
+      security:
+        - api_key: []
+      x-google-backend:
+        address: https://orders-backend-placeholder-uc.a.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
+      responses:
+        "200":
+          description: A list of orders

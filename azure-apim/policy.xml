@@ -1,0 +1,24 @@
+<policies>
+  <inbound>
+    <base />
+    <!-- Throttle per subscription key: 10 calls per 60 seconds -->
+    <rate-limit-by-key calls="10" renewal-period="60" counter-key="@(context.Subscription.Id)" />
+    <!-- Reject callers whose JWT is missing or invalid (issuer config is a placeholder) -->
+    <validate-jwt header-name="Authorization" failed-validation-httpcode="401">
+      <openid-config url="https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration" />
+    </validate-jwt>
+    <set-header name="X-Correlation-Id" exists-action="skip">
+      <value>@(Guid.NewGuid().ToString())</value>
+    </set-header>
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+    <set-header name="X-Powered-By" exists-action="delete" />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>
